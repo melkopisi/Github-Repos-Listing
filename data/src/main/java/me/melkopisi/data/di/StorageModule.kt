@@ -25,4 +25,8 @@ class StorageModule {
   ) = Room.databaseBuilder(context, GithubReposDatabase::class.java, "githubRepos.db")
     .fallbackToDestructiveMigration()
     .build()
+
+  @Singleton
+  @Provides
+  fun provideForecastDao(db: GithubReposDatabase) = db.githubReposDao()
 }
