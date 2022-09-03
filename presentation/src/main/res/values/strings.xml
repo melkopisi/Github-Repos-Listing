@@ -1,3 +1,4 @@
 <resources>
   <string name="app_name">Github Repos Listing</string>
+  <string name="stars_count">%d stars</string>
 </resources>

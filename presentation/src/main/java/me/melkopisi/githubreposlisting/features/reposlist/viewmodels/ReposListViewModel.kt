@@ -29,12 +29,19 @@ class ReposListViewModel @Inject constructor(
 
   internal val screenStates by lazy { MutableLiveData<ReposListState>() }
 
-  fun getRepos(pageNumber: Int) {
+  private var pageNumber = 1
+
+  fun getRepos(resetPageNumber: Boolean = false) {
+    if (resetPageNumber) {
+      pageNumber = 1
+      screenStates.value = ReposListState.FirstLoading
+    }
     useCase(pageNumber)
       .subscribeOn(ioThread)
       .doOnSubscribe { screenStates.value = ReposListState.Loading }
       .observeOn(mainThread)
       .subscribe({
+        pageNumber++
         screenStates.value = ReposListState.Success(it.map { domainModel ->
           domainModel.mapToGithubReposDomainModel()
         })
@@ -50,7 +57,8 @@ class ReposListViewModel @Inject constructor(
 }
 
 sealed class ReposListState {
+  object FirstLoading : ReposListState()
   object Loading : ReposListState()
-  class Success(uiModel: List<GithubReposUiModel>) : ReposListState()
-  class Fail(msg: String) : ReposListState()
+  class Success(val uiModelList: List<GithubReposUiModel>) : ReposListState()
+  class Fail(val msg: String) : ReposListState()
 }
