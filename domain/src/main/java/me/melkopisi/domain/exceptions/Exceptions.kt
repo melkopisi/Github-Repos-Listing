@@ -8,3 +8,4 @@ package me.melkopisi.domain
 class NetworkNotAvailableException : Throwable("Network is not available.")
 class DataRetrievingFailException : Throwable("Error getting data from server.")
 class NoDataException : Throwable("No data.")
+class NoLocalDataException : Throwable("No local data.")
