@@ -3,11 +3,12 @@ package me.melkopisi.githubreposlisting.features.reposlist.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
 import me.melkopisi.domain.usecases.GetReposUseCase
+import me.melkopisi.githubreposlisting.di.qualifiers.IOThread
+import me.melkopisi.githubreposlisting.di.qualifiers.MainThread
 import me.melkopisi.githubreposlisting.features.reposlist.models.GithubReposUiModel
 import me.melkopisi.githubreposlisting.features.reposlist.models.mappers.mapToGithubReposDomainModel
 import javax.inject.Inject
@@ -19,7 +20,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReposListViewModel @Inject constructor(
-  private val useCase: GetReposUseCase
+  private val useCase: GetReposUseCase,
+  @IOThread private val ioThread: Scheduler,
+  @MainThread private val mainThread: Scheduler
 ) : ViewModel() {
 
   private val compositeDisposable = CompositeDisposable()
@@ -28,9 +31,9 @@ class ReposListViewModel @Inject constructor(
 
   fun getRepos(pageNumber: Int) {
     useCase(pageNumber)
-      .subscribeOn(Schedulers.io())
+      .subscribeOn(ioThread)
       .doOnSubscribe { screenStates.value = ReposListState.Loading }
-      .observeOn(AndroidSchedulers.mainThread())
+      .observeOn(mainThread)
       .subscribe({
         screenStates.value = ReposListState.Success(it.map { domainModel ->
           domainModel.mapToGithubReposDomainModel()
