@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import me.melkopisi.data.network.api.GithubReposApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -48,5 +49,11 @@ class NetworkModule {
         level = HttpLoggingInterceptor.Level.BODY
       })
       .build()
+  }
+
+  @Singleton
+  @Provides
+  fun providesGithubApi(retrofit: Retrofit): GithubReposApi {
+    return retrofit.create(GithubReposApi::class.java)
   }
 }
