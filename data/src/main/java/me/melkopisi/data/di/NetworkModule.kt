@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import me.melkopisi.data.network.NetworkInterceptor
 import me.melkopisi.data.network.api.GithubReposApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -40,6 +41,7 @@ class NetworkModule {
   @Singleton
   @Provides
   fun providesOkHttpClient(
+    networkInterceptor: NetworkInterceptor
   ): OkHttpClient {
     return OkHttpClient.Builder()
       .connectTimeout(60, TimeUnit.SECONDS)
@@ -48,6 +50,7 @@ class NetworkModule {
       .addInterceptor(HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
       })
+      .addInterceptor(networkInterceptor)
       .build()
   }
 
