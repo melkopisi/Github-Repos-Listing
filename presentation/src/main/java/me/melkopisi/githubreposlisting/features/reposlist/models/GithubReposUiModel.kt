@@ -7,12 +7,7 @@ package me.melkopisi.githubreposlisting.features.reposlist.models
 data class GithubReposUiModel(
   val id: Int,
   val name: String,
-  val isPrivateRepo: Boolean,
   val owner: Owner,
-  val description: String,
-  val fork: Boolean,
-  val url: String,
-  val size: Int,
   val stargazersCount: Int,
   val watchersCount: Int,
   val language: String?,
@@ -20,8 +15,5 @@ data class GithubReposUiModel(
 ) {
   data class Owner(
     val login: String,
-    val id: Int,
-    val avatarUrl: String,
-    val url: String
   )
 }

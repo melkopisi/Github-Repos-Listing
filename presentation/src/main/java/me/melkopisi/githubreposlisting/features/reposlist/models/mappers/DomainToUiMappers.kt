@@ -10,21 +10,13 @@ import me.melkopisi.githubreposlisting.features.reposlist.models.GithubReposUiMo
 fun GithubReposDomainModel.Owner.mapToOwnerDomainModel(): GithubReposUiModel.Owner =
   GithubReposUiModel.Owner(
     login = login,
-    id = id,
-    avatarUrl = avatarUrl,
-    url = url
   )
 
 fun GithubReposDomainModel.mapToGithubReposDomainModel(): GithubReposUiModel =
   GithubReposUiModel(
     id = id,
     name = name,
-    isPrivateRepo = isPrivateRepo,
     owner = owner.mapToOwnerDomainModel(),
-    description = description,
-    fork = fork,
-    url = url,
-    size = size,
     stargazersCount = stargazersCount,
     watchersCount = watchersCount,
     language = language,
