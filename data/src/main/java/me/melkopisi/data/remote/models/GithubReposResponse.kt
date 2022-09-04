@@ -11,18 +11,8 @@ data class GithubReposResponse(
   val id: Int,
   @SerializedName("name")
   val name: String,
-  @SerializedName("private")
-  val isPrivateRepo: Boolean,
   @SerializedName("owner")
   val owner: Owner,
-  @SerializedName("description")
-  val description: String,
-  @SerializedName("fork")
-  val fork: Boolean,
-  @SerializedName("url")
-  val url: String,
-  @SerializedName("size")
-  val size: Int,
   @SerializedName("stargazers_count")
   val stargazersCount: Int,
   @SerializedName("watchers_count")
@@ -34,12 +24,6 @@ data class GithubReposResponse(
 ) {
   data class Owner(
     @SerializedName("login")
-    val login: String,
-    @SerializedName("id")
-    val id: Int,
-    @SerializedName("avatar_url")
-    val avatarUrl: String,
-    @SerializedName("url")
-    val url: String
+    val login: String
   )
 }

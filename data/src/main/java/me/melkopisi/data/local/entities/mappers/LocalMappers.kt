@@ -10,23 +10,13 @@ import me.melkopisi.domain.models.GithubReposDomainModel
  */
 
 fun GithubReposResponse.Owner.mapToOwnerEntity(): GithubReposEntity.Owner =
-  GithubReposEntity.Owner(
-    login = login,
-    id = id,
-    avatarUrl = avatarUrl,
-    url = url
-  )
+  GithubReposEntity.Owner(login = login)
 
 fun GithubReposResponse.mapToGithubReposEntity(): GithubReposEntity =
   GithubReposEntity(
     id = id,
     name = name,
-    isPrivateRepo = isPrivateRepo,
     owner = owner.mapToOwnerEntity(),
-    description = description,
-    fork = fork,
-    url = url,
-    size = size,
     stargazersCount = stargazersCount,
     watchersCount = watchersCount,
     language = language,
@@ -36,21 +26,13 @@ fun GithubReposResponse.mapToGithubReposEntity(): GithubReposEntity =
 fun GithubReposEntity.Owner.mapOwnerFromEntityToDomain(): GithubReposDomainModel.Owner =
   GithubReposDomainModel.Owner(
     login = login,
-    id = id,
-    avatarUrl = avatarUrl,
-    url = url
   )
 
 fun GithubReposEntity.mapGithubRepoFromEntityToDomain(): GithubReposDomainModel =
   GithubReposDomainModel(
     id = id,
     name = name,
-    isPrivateRepo = isPrivateRepo,
     owner = owner.mapOwnerFromEntityToDomain(),
-    description = description,
-    fork = fork,
-    url = url,
-    size = size,
     stargazersCount = stargazersCount,
     watchersCount = watchersCount,
     language = language,

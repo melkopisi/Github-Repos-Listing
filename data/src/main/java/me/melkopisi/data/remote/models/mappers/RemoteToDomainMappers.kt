@@ -9,23 +9,13 @@ import me.melkopisi.domain.models.GithubReposDomainModel
  */
 
 fun GithubReposResponse.Owner.mapToOwnerDomainModel(): GithubReposDomainModel.Owner =
-  GithubReposDomainModel.Owner(
-    login = login,
-    id = id,
-    avatarUrl = avatarUrl,
-    url = url
-  )
+  GithubReposDomainModel.Owner(login = login)
 
 fun GithubReposResponse.mapToGithubReposDomainModel(): GithubReposDomainModel =
   GithubReposDomainModel(
     id = id,
     name = name,
-    isPrivateRepo = isPrivateRepo,
     owner = owner.mapToOwnerDomainModel(),
-    description = description,
-    fork = fork,
-    url = url,
-    size = size,
     stargazersCount = stargazersCount,
     watchersCount = watchersCount,
     language = language,

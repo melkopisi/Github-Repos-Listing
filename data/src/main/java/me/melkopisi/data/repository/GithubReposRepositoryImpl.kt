@@ -7,6 +7,7 @@ import me.melkopisi.data.local.entities.mappers.mapGithubRepoFromEntityToDomain
 import me.melkopisi.data.local.entities.mappers.mapToGithubReposEntity
 import me.melkopisi.data.remote.GithubReposRemoteDataSource
 import me.melkopisi.data.remote.models.mappers.mapToGithubReposDomainModel
+import me.melkopisi.domain.GeneralException
 import me.melkopisi.domain.NetworkNotAvailableException
 import me.melkopisi.domain.NoLocalDataException
 import me.melkopisi.domain.models.GithubReposDomainModel
@@ -17,6 +18,7 @@ import javax.inject.Inject
  * Authored by Kopisi on 03 Sep, 2022.
  * Contact Me : m.elkopisi@gmail.com
  */
+
 class GithubReposRepositoryImpl @Inject constructor(
   private val remote: GithubReposRemoteDataSource,
   private val local: GithubReposLocalDataSource
@@ -43,7 +45,7 @@ class GithubReposRepositoryImpl @Inject constructor(
             }
           }
         } else {
-          throw NoLocalDataException()
+          throw GeneralException(throwable.message ?: "Something went wrong.")
         }
       }
   }

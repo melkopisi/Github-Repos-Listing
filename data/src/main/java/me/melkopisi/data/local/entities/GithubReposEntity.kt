@@ -12,21 +12,13 @@ import androidx.room.PrimaryKey
 data class GithubReposEntity(
   @PrimaryKey(autoGenerate = false) val id: Int,
   val name: String,
-  val isPrivateRepo: Boolean,
-  val owner: Owner,
-  val description: String,
-  val fork: Boolean,
-  val url: String,
-  val size: Int,
   val stargazersCount: Int,
+  val owner: Owner,
   val watchersCount: Int,
   val language: String?,
   val visibility: String,
 ) {
   data class Owner(
     val login: String,
-    val id: Int,
-    val avatarUrl: String,
-    val url: String
   )
 }
