@@ -5,14 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import me.melkopisi.data.extensions.isInternetAvailable
+import me.melkopisi.githubreposlisting.MainActivity
+import me.melkopisi.githubreposlisting.R
 import me.melkopisi.githubreposlisting.databinding.FragmentGithubReposListBinding
+import me.melkopisi.githubreposlisting.features.repodetails.RepoDetailsFragment
 import me.melkopisi.githubreposlisting.features.reposlist.adapters.ReposAdapter
 import me.melkopisi.githubreposlisting.features.reposlist.viewmodels.ReposListState.Fail
 import me.melkopisi.githubreposlisting.features.reposlist.viewmodels.ReposListState.FirstLoading
@@ -44,11 +49,34 @@ class GithubReposListFragment : Fragment() {
     return binding.root
   }
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    viewModel.getRepos()
+  }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setupActionbar()
     observeOnLiveData()
     setupRecyclerView()
-    viewModel.getRepos()
+    setupItemNavigation()
+  }
+
+  private fun setupActionbar() {
+    val actionBar = (requireActivity() as MainActivity).supportActionBar
+    actionBar?.let {
+      it.title = "Repos List"
+      it.setDisplayHomeAsUpEnabled(false)
+    }
+  }
+
+  private fun setupItemNavigation() {
+    adapter.onItemClick {
+      findNavController().navigate(
+        R.id.action_repos_list_fragment_to_repoDetailsFragment,
+        bundleOf(RepoDetailsFragment.ARG_REPO_DETAILS to it)
+      )
+    }
   }
 
   private fun setupRecyclerView() {

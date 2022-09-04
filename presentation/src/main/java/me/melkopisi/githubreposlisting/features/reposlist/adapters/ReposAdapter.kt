@@ -18,6 +18,7 @@ import me.melkopisi.githubreposlisting.features.reposlist.models.GithubReposUiMo
  */
 class ReposAdapter :
   RecyclerView.Adapter<ViewHolder>() {
+  private lateinit var itemCallback: (GithubReposUiModel) -> Unit
 
   private val diffCallback =
     object : DiffUtil.ItemCallback<BaseReposItem>() {
@@ -42,17 +43,26 @@ class ReposAdapter :
     differ.submitList(items)
   }
 
+  fun onItemClick(callback: (GithubReposUiModel) -> Unit) {
+    this.itemCallback = callback
+  }
+
   override fun getItemViewType(position: Int): Int {
     return if (differ.currentList[position] is ItemReposUiModel) 0 else 1
   }
 
-  class ReposViewHolder(private val binding: ItemRepoBinding) :
+  class ReposViewHolder(
+    private val binding: ItemRepoBinding,
+    private val itemCallback: ((GithubReposUiModel) -> Unit)
+  ) :
     ViewHolder(binding.root) {
     fun bind(item: GithubReposUiModel) {
       with(binding) {
         tvRepoTitle.text = item.name
         tvRepoOwner.text = item.owner.login
         tvRepoLikes.text = itemView.context.getString(R.string.stars_count, item.stargazersCount)
+        root.setOnClickListener { itemCallback(item) }
+
       }
     }
   }
@@ -61,7 +71,10 @@ class ReposAdapter :
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
     return if (viewType == 0) {
-      ReposViewHolder(ItemRepoBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+      ReposViewHolder(
+        ItemRepoBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+        itemCallback
+      )
     } else {
       LoadingViewHolder(
         ItemLoadingBinding.inflate(
