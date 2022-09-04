@@ -15,6 +15,6 @@ import me.melkopisi.data.local.entities.GithubReposEntity
 interface GithubReposDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE) fun insertRepos(repos: List<GithubReposEntity>)
 
-  @Query("SELECT * FROM github_repos_table ORDER BY id DESC")
+  @Query("SELECT * FROM github_repos_table")
   fun getRepos(): List<GithubReposEntity>
 }
