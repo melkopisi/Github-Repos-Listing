@@ -7,9 +7,7 @@ import me.melkopisi.data.local.entities.mappers.mapGithubRepoFromEntityToDomain
 import me.melkopisi.data.local.entities.mappers.mapToGithubReposEntity
 import me.melkopisi.data.remote.GithubReposRemoteDataSource
 import me.melkopisi.data.remote.models.mappers.mapToGithubReposDomainModel
-import me.melkopisi.domain.GeneralException
 import me.melkopisi.domain.NetworkNotAvailableException
-import me.melkopisi.domain.NoLocalDataException
 import me.melkopisi.domain.models.GithubReposDomainModel
 import me.melkopisi.domain.repository.GithubReposRepository
 import javax.inject.Inject
@@ -36,16 +34,12 @@ class GithubReposRepositoryImpl @Inject constructor(
       }.onErrorResumeNext { throwable ->
         if (throwable is NetworkNotAvailableException) {
           local.getAllRepos().map { entityList ->
-            if (entityList.isNotEmpty()) {
-              entityList.map { entity ->
-                entity.mapGithubRepoFromEntityToDomain()
-              }
-            } else {
-              throw NoLocalDataException()
+            entityList.map { entity ->
+              entity.mapGithubRepoFromEntityToDomain()
             }
           }
         } else {
-          throw GeneralException(throwable.message ?: "Something went wrong.")
+          throw throwable
         }
       }
   }

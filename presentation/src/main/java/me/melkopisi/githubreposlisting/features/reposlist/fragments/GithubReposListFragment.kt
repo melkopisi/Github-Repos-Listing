@@ -38,7 +38,7 @@ class GithubReposListFragment : Fragment() {
 
   private val viewModel: ReposListViewModel by viewModels()
 
-  private val adapter by lazy { ReposAdapter() }
+  private val reposAdapter by lazy { ReposAdapter() }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -59,7 +59,7 @@ class GithubReposListFragment : Fragment() {
     setupActionbar()
     observeOnLiveData()
     setupRecyclerView()
-    setupItemNavigation()
+    onRepoClick()
   }
 
   private fun setupActionbar() {
@@ -70,8 +70,8 @@ class GithubReposListFragment : Fragment() {
     }
   }
 
-  private fun setupItemNavigation() {
-    adapter.onItemClick {
+  private fun onRepoClick() {
+    reposAdapter.onItemClick {
       findNavController().navigate(
         R.id.action_repos_list_fragment_to_repoDetailsFragment,
         bundleOf(RepoDetailsFragment.ARG_REPO_DETAILS to it)
@@ -79,26 +79,25 @@ class GithubReposListFragment : Fragment() {
     }
   }
 
-  private fun setupRecyclerView() {
-    binding.reposRecyclerview.apply {
-      itemAnimator = null
-      addOnScrollListener(object : EndlessRecyclerViewScrollListener(
-        layoutManager as LinearLayoutManager
-      ) {
-        override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-          if (requireContext().isInternetAvailable()) viewModel.getRepos()
-        }
-      })
-      adapter = this@GithubReposListFragment.adapter
-    }
+  private fun setupRecyclerView() = binding.reposRecyclerview.apply {
+    itemAnimator = null
+    addOnScrollListener(object : EndlessRecyclerViewScrollListener(
+      layoutManager as LinearLayoutManager
+    ) {
+      override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+        if (requireContext().isInternetAvailable()) viewModel.getRepos()
+      }
+    })
+    adapter = this@GithubReposListFragment.reposAdapter
   }
+
 
   private fun observeOnLiveData() {
     viewModel.screenStates.observe(viewLifecycleOwner) {
       setFirstLoading(it is FirstLoading)
       when (it) {
         is Success -> {
-          adapter.setItems(it.list)
+          reposAdapter.setItems(it.list)
         }
         is Fail -> {
           Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()

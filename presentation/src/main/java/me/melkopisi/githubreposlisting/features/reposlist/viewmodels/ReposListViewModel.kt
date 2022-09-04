@@ -10,9 +10,7 @@ import me.melkopisi.domain.models.GithubReposDomainModel
 import me.melkopisi.domain.usecases.GetReposUseCase
 import me.melkopisi.githubreposlisting.di.qualifiers.IOThread
 import me.melkopisi.githubreposlisting.di.qualifiers.MainThread
-import me.melkopisi.githubreposlisting.features.reposlist.adapters.BaseReposItem
-import me.melkopisi.githubreposlisting.features.reposlist.adapters.BaseReposItem.ItemLoading
-import me.melkopisi.githubreposlisting.features.reposlist.adapters.BaseReposItem.ItemReposUiModel
+import me.melkopisi.githubreposlisting.features.reposlist.adapters.AdapterItem
 import me.melkopisi.githubreposlisting.features.reposlist.models.GithubReposUiModel
 import me.melkopisi.githubreposlisting.features.reposlist.models.mappers.mapToGithubReposUiModel
 import javax.inject.Inject
@@ -47,35 +45,45 @@ class ReposListViewModel @Inject constructor(
     useCase(pageNumber)
       .subscribeOn(ioThread)
       .doOnSubscribe {
-        if (pageNumber > 1 && !isLastPage) {
-          screenStates.value = ReposListState.Success(cachedList.mapToLoadingAdapterModel())
+        if (pageNumber > 1) {
+          screenStates.value = ReposListState.Success(cachedList.mapToAdapterItemsWithLoading())
         }
       }
       .observeOn(mainThread)
       .subscribe({
-        if (it.isEmpty() || pageNumber == 9) isLastPage = true
+        if (it.isEmpty()) {
+          isLastPage = true
+          return@subscribe
+        }
         pageNumber++
-        screenStates.value = ReposListState.Success(it.mapToAdapterModel())
+        it.addToCache()
+        screenStates.value = ReposListState.Success(cachedList.mapToAdapterItem())
         isLoadingEnabled = false
       }, {
-        it.printStackTrace()
-        screenStates.value = ReposListState.Fail(it.message ?: "Something went wrong.")
-        isLoadingEnabled = false
+        if (cachedList.isNotEmpty()) {
+          screenStates.value = ReposListState.Success(cachedList.mapToAdapterItem())
+        } else {
+          it.printStackTrace()
+          screenStates.value = ReposListState.Fail(it.message ?: "Something went wrong.")
+          isLoadingEnabled = false
+        }
       })
       .addTo(compositeDisposable)
   }
 
-  private fun List<GithubReposDomainModel>.mapToAdapterModel(): MutableList<BaseReposItem> {
+  private fun List<GithubReposUiModel>.mapToAdapterItem(): List<AdapterItem> =
+    map { uiModel -> AdapterItem.ItemRepo(uiModel) }
+
+  private fun List<GithubReposDomainModel>.addToCache() {
     cachedList.addAll(this.map { domainModel -> domainModel.mapToGithubReposUiModel() })
-    return cachedList.map { uiModel -> ItemReposUiModel(uiModel) }.toMutableList()
   }
 
-  private fun List<GithubReposUiModel>.mapToLoadingAdapterModel(): MutableList<BaseReposItem> {
-    val list = mutableListOf<BaseReposItem>()
+  private fun List<GithubReposUiModel>.mapToAdapterItemsWithLoading(): List<AdapterItem> {
+    val list = mutableListOf<AdapterItem>()
     this.onEach { uiModel ->
-      list.add(ItemReposUiModel(uiModel))
+      list.add(AdapterItem.ItemRepo(uiModel))
     }
-    list.add(list.size, ItemLoading)
+    list.add(list.size, AdapterItem.ItemLoading)
     return list
   }
 
@@ -86,6 +94,6 @@ class ReposListViewModel @Inject constructor(
 
 sealed class ReposListState {
   object FirstLoading : ReposListState()
-  data class Success(val list: MutableList<BaseReposItem>) : ReposListState()
+  data class Success(val list: List<AdapterItem>) : ReposListState()
   data class Fail(val msg: String) : ReposListState()
 }

@@ -6,13 +6,12 @@ import com.nhaarman.mockito_kotlin.any
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import me.melkopisi.domain.DataRetrievingFailException
-import me.melkopisi.domain.GeneralException
 import me.melkopisi.domain.NetworkNotAvailableException
 import me.melkopisi.domain.NoDataException
 import me.melkopisi.domain.NoLocalDataException
 import me.melkopisi.domain.models.GithubReposDomainModel
 import me.melkopisi.domain.usecases.GetReposUseCase
-import me.melkopisi.githubreposlisting.features.reposlist.adapters.BaseReposItem.ItemReposUiModel
+import me.melkopisi.githubreposlisting.features.reposlist.adapters.AdapterItem.ItemRepo
 import me.melkopisi.githubreposlisting.features.reposlist.models.mappers.mapToGithubReposUiModel
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -72,7 +71,7 @@ class ReposListViewModelTest {
     val values = getReposCaptor.allValues
     assertEquals(ReposListState.FirstLoading, values[0])
     assertEquals(ReposListState.Success(mutableListOf(domainModel.mapToGithubReposUiModel()).map {
-      ItemReposUiModel(
+      ItemRepo(
         it
       )
     }.toMutableList()), values[1])
@@ -141,25 +140,6 @@ class ReposListViewModelTest {
     viewModel.screenStates.observeForever(getReposLiveData)
 
     val exception = NoLocalDataException()
-    Mockito.lenient()
-      .`when`(useCase(any()))
-      .thenReturn(Single.error(exception))
-
-    viewModel.getRepos()
-
-    Mockito.verify(getReposLiveData, Mockito.times(2))
-      .onChanged(getReposCaptor.capture())
-    val values = getReposCaptor.allValues
-    assertEquals(ReposListState.FirstLoading, values[0])
-    assertEquals(ReposListState.Fail(exception.message ?: ""), values[1])
-  }
-
-  @Test
-  fun `when getRepos() then return GeneralException`() {
-
-    viewModel.screenStates.observeForever(getReposLiveData)
-
-    val exception = GeneralException("Something went wrong.")
     Mockito.lenient()
       .`when`(useCase(any()))
       .thenReturn(Single.error(exception))

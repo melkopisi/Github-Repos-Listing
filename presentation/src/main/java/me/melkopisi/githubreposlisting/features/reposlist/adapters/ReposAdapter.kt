@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import me.melkopisi.githubreposlisting.R
 import me.melkopisi.githubreposlisting.databinding.ItemLoadingBinding
 import me.melkopisi.githubreposlisting.databinding.ItemRepoBinding
-import me.melkopisi.githubreposlisting.features.reposlist.adapters.BaseReposItem.ItemReposUiModel
+import me.melkopisi.githubreposlisting.features.reposlist.adapters.AdapterItem.ItemRepo
 import me.melkopisi.githubreposlisting.features.reposlist.models.GithubReposUiModel
 
 /*
@@ -21,17 +21,17 @@ class ReposAdapter :
   private lateinit var itemCallback: (GithubReposUiModel) -> Unit
 
   private val diffCallback =
-    object : DiffUtil.ItemCallback<BaseReposItem>() {
+    object : DiffUtil.ItemCallback<AdapterItem>() {
       override fun areItemsTheSame(
-        oldItem: BaseReposItem,
-        newItem: BaseReposItem
+        oldItem: AdapterItem,
+        newItem: AdapterItem
       ): Boolean {
         return oldItem.hashCode() == newItem.hashCode()
       }
 
       override fun areContentsTheSame(
-        oldItem: BaseReposItem,
-        newItem: BaseReposItem
+        oldItem: AdapterItem,
+        newItem: AdapterItem
       ): Boolean {
         return oldItem == newItem
       }
@@ -39,7 +39,7 @@ class ReposAdapter :
 
   private val differ = AsyncListDiffer(this, diffCallback)
 
-  fun setItems(items: List<BaseReposItem>) {
+  fun setItems(items: List<AdapterItem>) {
     differ.submitList(items)
   }
 
@@ -48,7 +48,7 @@ class ReposAdapter :
   }
 
   override fun getItemViewType(position: Int): Int {
-    return if (differ.currentList[position] is ItemReposUiModel) 0 else 1
+    return if (differ.currentList[position] is ItemRepo) 0 else 1
   }
 
   class ReposViewHolder(
@@ -90,12 +90,12 @@ class ReposAdapter :
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     if (holder is ReposViewHolder) {
-      holder.bind((differ.currentList[position] as ItemReposUiModel).item)
+      holder.bind((differ.currentList[position] as ItemRepo).item)
     }
   }
 }
 
-sealed class BaseReposItem {
-  data class ItemReposUiModel(val item: GithubReposUiModel) : BaseReposItem()
-  object ItemLoading : BaseReposItem()
+sealed class AdapterItem {
+  data class ItemRepo(val item: GithubReposUiModel) : AdapterItem()
+  object ItemLoading : AdapterItem()
 }
