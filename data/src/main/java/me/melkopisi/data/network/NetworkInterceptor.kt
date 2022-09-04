@@ -1,7 +1,6 @@
 package me.melkopisi.data.network
 
 import android.content.Context
-import android.os.SystemClock
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.melkopisi.data.extensions.isInternetAvailable
 import me.melkopisi.domain.NetworkNotAvailableException
@@ -24,7 +23,6 @@ class NetworkInterceptor @Inject constructor(
   override fun intercept(chain: Chain): Response {
     val request = chain.request()
     if (context.isInternetAvailable().not()) throw NetworkNotAvailableException()
-    SystemClock.sleep(1000L)
     return chain.proceed(request)
   }
 }
