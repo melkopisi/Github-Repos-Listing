@@ -14,7 +14,7 @@ import me.melkopisi.githubreposlisting.features.reposlist.adapters.BaseReposItem
 import me.melkopisi.githubreposlisting.features.reposlist.adapters.BaseReposItem.ItemLoading
 import me.melkopisi.githubreposlisting.features.reposlist.adapters.BaseReposItem.ItemReposUiModel
 import me.melkopisi.githubreposlisting.features.reposlist.models.GithubReposUiModel
-import me.melkopisi.githubreposlisting.features.reposlist.models.mappers.mapToGithubReposDomainModel
+import me.melkopisi.githubreposlisting.features.reposlist.models.mappers.mapToGithubReposUiModel
 import javax.inject.Inject
 
 /*
@@ -66,7 +66,7 @@ class ReposListViewModel @Inject constructor(
   }
 
   private fun List<GithubReposDomainModel>.mapToAdapterModel(): MutableList<BaseReposItem> {
-    cachedList.addAll(this.map { domainModel -> domainModel.mapToGithubReposDomainModel() })
+    cachedList.addAll(this.map { domainModel -> domainModel.mapToGithubReposUiModel() })
     return cachedList.map { uiModel -> ItemReposUiModel(uiModel) }.toMutableList()
   }
 
@@ -86,6 +86,6 @@ class ReposListViewModel @Inject constructor(
 
 sealed class ReposListState {
   object FirstLoading : ReposListState()
-  class Success(val list: MutableList<BaseReposItem>) : ReposListState()
-  class Fail(val msg: String) : ReposListState()
+  data class Success(val list: MutableList<BaseReposItem>) : ReposListState()
+  data class Fail(val msg: String) : ReposListState()
 }

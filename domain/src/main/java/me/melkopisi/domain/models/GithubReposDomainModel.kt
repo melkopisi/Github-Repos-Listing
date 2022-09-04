@@ -12,8 +12,7 @@ data class GithubReposDomainModel(
   val stargazersCount: Int,
   val watchersCount: Int,
   val language: String?,
-  val visibility: String,
-  val isOffline: Boolean = false
+  val visibility: String
 ) {
   data class Owner(
     val login: String,

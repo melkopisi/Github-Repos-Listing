@@ -7,16 +7,16 @@ import me.melkopisi.githubreposlisting.features.reposlist.models.GithubReposUiMo
  * Authored by Kopisi on 03 Sep, 2022.
  * Contact Me : m.elkopisi@gmail.com
  */
-fun GithubReposDomainModel.Owner.mapToOwnerDomainModel(): GithubReposUiModel.Owner =
+fun GithubReposDomainModel.Owner.mapToOwnerUiModel(): GithubReposUiModel.Owner =
   GithubReposUiModel.Owner(
     login = login,
   )
 
-fun GithubReposDomainModel.mapToGithubReposDomainModel(): GithubReposUiModel =
+fun GithubReposDomainModel.mapToGithubReposUiModel(): GithubReposUiModel =
   GithubReposUiModel(
     id = id,
     name = name,
-    owner = owner.mapToOwnerDomainModel(),
+    owner = owner.mapToOwnerUiModel(),
     stargazersCount = stargazersCount,
     watchersCount = watchersCount,
     language = language,
