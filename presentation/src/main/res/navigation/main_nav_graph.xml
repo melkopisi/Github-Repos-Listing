@@ -9,5 +9,19 @@
       android:id="@+id/repos_list_fragment"
       android:name="me.melkopisi.githubreposlisting.features.reposlist.fragments.GithubReposListFragment"
       android:label="ReposListFragment"
-      tools:layout="@layout/fragment_github_repos_list" />
+      tools:layout="@layout/fragment_github_repos_list">
+
+    <action
+        android:id="@+id/action_repos_list_fragment_to_repoDetailsFragment"
+        app:destination="@id/repoDetailsFragment" />
+  </fragment>
+  <fragment
+      android:id="@+id/repoDetailsFragment"
+      android:name="me.melkopisi.githubreposlisting.features.repodetails.RepoDetailsFragment"
+      android:label="RepoDetailsFragment"
+      tools:layout="@layout/fragment_repo_details">
+    <argument
+        android:name="repoDetails"
+        app:argType="me.melkopisi.githubreposlisting.features.reposlist.models.GithubReposUiModel" />
+  </fragment>
 </navigation>
