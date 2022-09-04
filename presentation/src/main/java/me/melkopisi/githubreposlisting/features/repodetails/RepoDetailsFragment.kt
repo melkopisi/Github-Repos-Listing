@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import me.melkopisi.githubreposlisting.MainActivity
+import me.melkopisi.githubreposlisting.R
 import me.melkopisi.githubreposlisting.databinding.FragmentRepoDetailsBinding
 import me.melkopisi.githubreposlisting.features.reposlist.models.GithubReposUiModel
 
@@ -47,6 +48,16 @@ class RepoDetailsFragment : Fragment() {
   }
 
   private fun initDetails() {
+    with(binding) {
+      repoDetails?.let {
+        tvRepoName.text = getString(R.string.repo_name, it.name)
+        tvOwnerName.text = getString(R.string.repo_name, it.owner.login)
+        tvLanguage.text = getString(R.string.repo_name, it.language)
+        tvStarsCount.text = getString(R.string.stars_count, it.stargazersCount)
+        tvWatchersCount.text = getString(R.string.watcher_count, it.watchersCount)
+        tvVisibility.text = getString(R.string.repo_visibility_state, it.visibility)
+      }
+    }
   }
 
   override fun onDestroyView() {
