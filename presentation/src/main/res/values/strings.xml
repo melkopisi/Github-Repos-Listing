@@ -1,3 +1,9 @@
 <resources>
   <string name="app_name">Github Repos Listing</string>
+  <string name="stars_count">%d stars</string>
+  <string name="repo_name">Repo name: %s</string>
+  <string name="repo_owner">Repo owner: %s</string>
+  <string name="watcher_count">%d watchers</string>
+  <string name="language_name">Language is: %s</string>
+  <string name="repo_visibility_state">Repo is: %s</string>
 </resources>

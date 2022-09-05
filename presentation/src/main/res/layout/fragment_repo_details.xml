@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    >
+
+  <TextView
+      android:id="@+id/tv_repo_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="10dp"
+      android:textAlignment="center"
+      android:textSize="20sp"
+      tools:text="@tools:sample/full_names"
+      />
+
+  <TextView
+      android:id="@+id/tv_owner_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="10dp"
+      android:textAlignment="center"
+      android:textSize="20sp"
+      tools:text="@tools:sample/full_names"
+      />
+
+  <TextView
+      android:id="@+id/tv_stars_count"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="10dp"
+      android:textAlignment="center"
+      android:textSize="20sp"
+      tools:text="@tools:sample/full_names"
+      />
+
+  <TextView
+      android:id="@+id/tv_watchers_count"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="10dp"
+      android:textAlignment="center"
+      android:textSize="20sp"
+      tools:text="@tools:sample/full_names"
+      />
+
+  <TextView
+      android:id="@+id/tv_language"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="10dp"
+      android:textAlignment="center"
+      android:textSize="20sp"
+      tools:text="@tools:sample/full_names"
+      />
+
+  <TextView
+      android:id="@+id/tv_visibility"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="10dp"
+      android:textAlignment="center"
+      android:textSize="20sp"
+      tools:text="@tools:sample/full_names"
+      />
+</LinearLayout>

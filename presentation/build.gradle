@@ -3,6 +3,7 @@ plugins {
   id 'org.jetbrains.kotlin.android'
   id 'kotlin-kapt'
   id 'dagger.hilt.android.plugin'
+  id 'kotlin-parcelize'
 }
 
 android {
@@ -14,6 +15,7 @@ android {
     targetSdk 32
     versionCode 1
     versionName "1.0"
+    multiDexEnabled true
 
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -30,6 +32,10 @@ android {
   }
   kotlinOptions {
     jvmTarget = '1.8'
+  }
+
+  buildFeatures {
+    viewBinding true
   }
 }
 
