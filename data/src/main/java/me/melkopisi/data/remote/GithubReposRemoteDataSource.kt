@@ -4,7 +4,7 @@ import io.reactivex.Single
 import me.melkopisi.data.extensions.parseResponse
 import me.melkopisi.data.network.api.GithubReposApi
 import me.melkopisi.data.remote.models.GithubReposResponse
-import me.melkopisi.domain.NoDataException
+import me.melkopisi.domain.exceptions.NoDataException
 import javax.inject.Inject
 
 /*
@@ -20,11 +20,9 @@ class GithubReposRemoteDataSource @Inject constructor(
     pageNumber: Int,
     perPage: Int = 15
   ): Single<List<GithubReposResponse>> {
+
     return githubReposApi.getRepos(user = user, pageNumber = pageNumber, perPage = perPage)
-      .parseResponse().map {
-        it.ifEmpty {
-          throw NoDataException()
-        }
-      }
+      .parseResponse()
+      .map { it.ifEmpty { throw NoDataException() } }
   }
 }

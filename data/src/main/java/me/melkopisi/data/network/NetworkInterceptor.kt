@@ -3,7 +3,7 @@ package me.melkopisi.data.network
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.melkopisi.data.extensions.isInternetAvailable
-import me.melkopisi.domain.NetworkNotAvailableException
+import me.melkopisi.domain.exceptions.NetworkNotAvailableException
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.Response

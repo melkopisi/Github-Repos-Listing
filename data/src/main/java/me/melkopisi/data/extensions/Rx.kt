@@ -1,8 +1,8 @@
 package me.melkopisi.data.extensions
 
 import io.reactivex.Single
-import me.melkopisi.domain.DataRetrievingFailException
-import me.melkopisi.domain.NoDataException
+import me.melkopisi.domain.exceptions.DataRetrievingFailException
+import me.melkopisi.domain.exceptions.NoDataException
 import retrofit2.Response
 
 /*

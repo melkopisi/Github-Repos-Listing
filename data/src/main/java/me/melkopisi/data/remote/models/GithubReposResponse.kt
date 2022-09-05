@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
  * Authored by Kopisi on 03 Sep, 2022.
  * Contact Me : m.elkopisi@gmail.com
  */
+
 data class GithubReposResponse(
   @SerializedName("id")
   val id: Int,
