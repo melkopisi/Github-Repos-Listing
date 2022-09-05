@@ -5,10 +5,10 @@ import androidx.lifecycle.Observer
 import com.nhaarman.mockito_kotlin.any
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import me.melkopisi.domain.DataRetrievingFailException
-import me.melkopisi.domain.NetworkNotAvailableException
-import me.melkopisi.domain.NoDataException
-import me.melkopisi.domain.NoLocalDataException
+import me.melkopisi.domain.exceptions.DataRetrievingFailException
+import me.melkopisi.domain.exceptions.NetworkNotAvailableException
+import me.melkopisi.domain.exceptions.NoDataException
+import me.melkopisi.domain.exceptions.NoLocalDataException
 import me.melkopisi.domain.models.GithubReposDomainModel
 import me.melkopisi.domain.usecases.GetReposUseCase
 import me.melkopisi.githubreposlisting.features.reposlist.adapters.AdapterItem.ItemRepo

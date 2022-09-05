@@ -71,20 +71,17 @@ class ReposListViewModel @Inject constructor(
       .addTo(compositeDisposable)
   }
 
-  private fun List<GithubReposUiModel>.mapToAdapterItem(): List<AdapterItem> =
-    map { uiModel -> AdapterItem.ItemRepo(uiModel) }
-
   private fun List<GithubReposDomainModel>.addToCache() {
     cachedList.addAll(this.map { domainModel -> domainModel.mapToGithubReposUiModel() })
   }
 
+  private fun List<GithubReposUiModel>.mapToAdapterItem(): List<AdapterItem> =
+    map { uiModel -> AdapterItem.ItemRepo(uiModel) }
+
   private fun List<GithubReposUiModel>.mapToAdapterItemsWithLoading(): List<AdapterItem> {
-    val list = mutableListOf<AdapterItem>()
-    this.onEach { uiModel ->
-      list.add(AdapterItem.ItemRepo(uiModel))
-    }
-    list.add(list.size, AdapterItem.ItemLoading)
-    return list
+    return this.map { AdapterItem.ItemRepo(it) }
+      .toMutableList<AdapterItem>()
+      .apply { add(AdapterItem.ItemLoading) }
   }
 
   override fun onCleared() {

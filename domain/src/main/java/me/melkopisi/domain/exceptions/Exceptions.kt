@@ -1,4 +1,4 @@
-package me.melkopisi.domain
+package me.melkopisi.domain.exceptions
 
 /*
  * Authored by Kopisi on 03 Sep, 2022.

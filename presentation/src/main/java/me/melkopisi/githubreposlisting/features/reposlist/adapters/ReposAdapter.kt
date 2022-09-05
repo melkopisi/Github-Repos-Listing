@@ -54,15 +54,14 @@ class ReposAdapter :
   class ReposViewHolder(
     private val binding: ItemRepoBinding,
     private val itemCallback: ((GithubReposUiModel) -> Unit)
-  ) :
-    ViewHolder(binding.root) {
+  ) : ViewHolder(binding.root) {
+
     fun bind(item: GithubReposUiModel) {
       with(binding) {
         tvRepoTitle.text = item.name
         tvRepoOwner.text = item.owner.login
         tvRepoLikes.text = itemView.context.getString(R.string.stars_count, item.stargazersCount)
         root.setOnClickListener { itemCallback(item) }
-
       }
     }
   }
@@ -86,13 +85,13 @@ class ReposAdapter :
     }
   }
 
-  override fun getItemCount(): Int = differ.currentList.size
-
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     if (holder is ReposViewHolder) {
       holder.bind((differ.currentList[position] as ItemRepo).item)
     }
   }
+
+  override fun getItemCount(): Int = differ.currentList.size
 }
 
 sealed class AdapterItem {

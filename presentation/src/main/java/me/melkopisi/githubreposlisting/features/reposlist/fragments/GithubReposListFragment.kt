@@ -40,6 +40,11 @@ class GithubReposListFragment : Fragment() {
 
   private val reposAdapter by lazy { ReposAdapter() }
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    viewModel.getRepos()
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -47,11 +52,6 @@ class GithubReposListFragment : Fragment() {
   ): View {
     _binding = FragmentGithubReposListBinding.inflate(inflater, container, false)
     return binding.root
-  }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    viewModel.getRepos()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,17 +91,12 @@ class GithubReposListFragment : Fragment() {
     adapter = this@GithubReposListFragment.reposAdapter
   }
 
-
   private fun observeOnLiveData() {
     viewModel.screenStates.observe(viewLifecycleOwner) {
       setFirstLoading(it is FirstLoading)
       when (it) {
-        is Success -> {
-          reposAdapter.setItems(it.list)
-        }
-        is Fail -> {
-          Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
-        }
+        is Success -> reposAdapter.setItems(it.list)
+        is Fail -> Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
         else -> Unit
       }
     }

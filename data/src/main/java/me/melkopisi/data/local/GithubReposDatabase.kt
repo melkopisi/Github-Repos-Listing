@@ -13,5 +13,6 @@ import me.melkopisi.data.local.entities.GithubReposEntity
 @Database(entities = [GithubReposEntity::class], version = 1, exportSchema = false)
 @TypeConverters(OwnerConverters::class)
 abstract class GithubReposDatabase : RoomDatabase() {
+
   abstract fun githubReposDao(): GithubReposDao
 }
